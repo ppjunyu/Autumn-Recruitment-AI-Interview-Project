@@ -1,2 +1,7 @@
-# Autumn-Recruitment-AI-Interview-Project
-秋招复刻AI面试项目学习
+# 秋招复刻：AI 招聘面试智能体
+
+陈俊宇的秋招项目复刻仓库。目标岗位是大模型应用开发、AI 应用开发、智能体开发和 AI 全栈开发。
+
+长期背景、简历事实和工作约定在 [`docs/context.md`](docs/context.md)。给后续协作会话看的约束在 [`AGENTS.md`](AGENTS.md)。
+
+当前进度：约定已写下，代码尚未开始。第一段要做的是招聘智能体的评测集和 RAG 出题。
