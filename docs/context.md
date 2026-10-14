@@ -65,9 +65,9 @@
 
 低星开源项目不作为实现参考。抖音、小红书面经以后用 Playwright 浏览器自动化整理，当前不接社交账号。
 
-`frontend/` 是 Vue3 界面，`backend/` 是 FastAPI。可以新建初试、查看 BM25 命中的原句、文字作答、看到追问判定，并生成三阶段规则记录。没有大模型密钥时，出题和追问用模板，模板带上材料原句或候选人原话。
+`frontend/` 是 Vue3 界面，`backend/` 是 FastAPI。当前页面是人员列表、出题配置、资料上传和题单审阅。更早的文字初试仍可通过 `/api/interviews` 调用。
 
-还没接上：大模型密钥、语音识别、PostgreSQL/pgvector、Redis/Celery、钉钉凭证、真实候选人数据。本机约 16GB 内存且没有单独 GPU，不在本地加载 Qwen。
+还没接上：语音识别、Redis/Celery、钉钉凭证、召回评测集、多路召回和重排。云环境不启动这套页面和数据库。功能一的出题台使用 PostgreSQL、pgvector 和本机 bge-m3，密钥来自 `Qwen_API_KEY`。更早的文字初试接口仍留在 `/api/interviews`。
 
 ## 招聘智能体：优先补的追问
 
@@ -95,4 +95,4 @@
 
 ## 当前状态
 
-2026-10-14 已有可交互初试切片。复现顺序改为三个功能：RAG 面试题生成、实时语音与评分、多 Agent 综合评价报告。功能一的线上行为和待确认方案在 `docs/feature-question-generation.md`。确认前不实现该方案。项目不在云环境运行，由用户在本地 WSL 启动和测试。
+2026-10-14 功能一已按确认方案写入仓库：虚构电力岗位、关键词召回后过滤、bge-m3 向量入库、Qwen JSON 出题、发起面试只到账号密码和题单。方案说明在 `docs/feature-question-generation.md`。项目由用户在本地 WSL 启动和测试。

@@ -1,35 +1,35 @@
 <script setup>
-import { onMounted, ref } from "vue";
-import { api } from "./api";
+import { ref } from "vue";
+import { role, setRole } from "./api";
 
-const health = ref(null);
+const current = ref(role());
 
-onMounted(async () => {
-  health.value = await api("/api/health");
-});
+function change(event) {
+  setRole(event.target.value);
+  current.value = event.target.value;
+}
 </script>
 
 <template>
   <div class="shell">
-    <aside>
+    <aside class="side">
       <p class="brand">招聘面试智能体</p>
-      <p class="brand-note">初试切片 · 恒道实习复刻</p>
+      <p class="brand-note">语音面试 · 面试题生成</p>
       <nav>
-        <RouterLink to="/">面试场次</RouterLink>
-        <RouterLink to="/new">新建初试</RouterLink>
-        <RouterLink to="/status">能力与卡点</RouterLink>
+        <RouterLink to="/people">人员列表</RouterLink>
+        <RouterLink to="/questions">面试题生成</RouterLink>
+        <RouterLink to="/materials">岗位资料与题库</RouterLink>
       </nav>
+      <label class="role">
+        当前身份
+        <select :value="current" @change="change">
+          <option value="hr">HR</option>
+          <option value="leader">团队负责人</option>
+        </select>
+      </label>
     </aside>
-    <div class="main">
-      <header v-if="health" class="capability">
-        <span>检索 {{ health.retrieval }}</span>
-        <span>编排 {{ health.orchestration }}</span>
-        <span>{{ health.llm_configured ? "大模型已配置" : "大模型未配置" }}</span>
-        <span>语音未接入</span>
-        <span>钉钉未连接</span>
-        <RouterLink to="/status">查看卡点</RouterLink>
-      </header>
+    <main class="main">
       <RouterView />
-    </div>
+    </main>
   </div>
 </template>

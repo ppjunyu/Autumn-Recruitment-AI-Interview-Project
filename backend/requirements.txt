@@ -7,3 +7,10 @@ pydantic
 pytest
 httpx
 python-multipart
+openai
+pgvector
+psycopg[binary]
+pypdf
+python-docx
+openpyxl
+python-pptx

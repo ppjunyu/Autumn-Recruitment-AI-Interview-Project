@@ -1,5 +1,10 @@
 import json
 import uuid
+from contextlib import asynccontextmanager
+
+from app.envfile import load_env_file
+
+load_env_file()
 
 from fastapi import Depends, FastAPI, File, HTTPException, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
@@ -11,11 +16,27 @@ from app.db import Base, engine, get_db
 from app.engine import build_report, plan_questions, run_turn
 from app.llm_client import llm_config
 from app.models import Interview, now_iso
+from app.recruit_api import router as recruit_router
 from app.sample_data import SAMPLE
 
 Base.metadata.create_all(engine)
 
-app = FastAPI(title="招聘面试智能体复刻")
+
+@asynccontextmanager
+async def lifespan(_app: FastAPI):
+    try:
+        from app.recruit_db import init_recruit_db
+
+        init_recruit_db()
+    except Exception:
+        pass
+    yield
+
+
+app = FastAPI(title="招聘面试智能体复刻", lifespan=lifespan)
+app.include_router(recruit_router)
+
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
