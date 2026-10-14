@@ -21,11 +21,9 @@
 - 青岛理工大学，自动化，本科，2020.9–2024.6
 - 邮箱 junyu.chen@hrbeu.edu.cn，电话 17707227168，微信 c17707227168
 
-## 主线与辅线
+## 范围
 
-主线是实习项目「AI 招聘面试智能体」。它和目标岗位最贴，公开材料又最不像一份能抗追问的工程仓库，所以先重做它。
-
-辅线是校企项目「智能仓储箱贴信息抽取」。选型、现场 badcase、新箱贴泛化已经构成完整故事。默认只补追问，不和主线并行从零重写。岗位 JD 明确偏多模态时再把辅线提前。
+本仓库只做实习项目「AI 招聘面试智能体」。简历上的杰克科技箱贴信息抽取不在本对话、本仓库和本项目里展开。
 
 本仓库是秋招复刻学习仓。恒道生产代码可能在内部仓库，路径常含 `sdhd-20251204-datastoreware-chenjunyu` 或 DataStoreWare。不要把本仓库说成那份生产代码。
 
@@ -63,23 +61,27 @@
 
 技能栏里的 A2A、Skills 等，只有切片里真用到并能讲清边界时才写进复刻。不为了简历名词单开模块。
 
-## 辅线：仓储箱贴
+## 开源对照（2026-10-14）
 
-- 时间：2025.06–2026.03
-- 名称：智能仓储信息管理系统（校企合作），角色是多模态算法开发
-- 客户：杰克科技。非标箱贴几十余种且持续新增
-- 链路：现场 PDA → 云端算法 → WMS
-- 业务结果：每人每小时吞吐约 100 箱提升到约 1200 箱
-- 仓库：https://gitee.com/junyulab/hf_xt_ocr（独立维护）
+没有一份开源项目同时具备真实企业用户和可照搬的语音初试闭环。星标是当天 GitHub API 读数，不能当成生产案例。
 
-简历四条：
+值得按主题读，不整仓替换：
 
-1. 吞吐：权重预加载、量化、vLLM、上传与推理解耦。RTX 4090 上 12→50 箱/分钟。
-2. 准确率：现场 badcase、数据集与 Benchmark。对比 YOLOseg、GDINO+SAM2、VLM 与 LLM 后，选定开放词汇检测 + 提示分割，加上 OpenCV 透视矫正、PPOCR、字形消歧、模板路由、Qwen3.6-35B-A3B 抽取。字段准确率 72%→98%，支持 few-shot 增量泛化。
-3. Vue3 客户端：图像标注、SQLite 模板库、抽取结果以 NDJSON 流式返回。
-4. 部署：Docker + FastAPI 到阿里云，再接到 WMS。异常预警，日志留推理链供回溯。
+- 实时语音用 LiveKit Agents（约 1.5 万星，Apache-2.0）。官方 `examples/survey` 用 TaskGroup 做分阶段筛选；`livekit-examples/interview-agent-demo` 把通话循环和通话后报告拆开。对应他简历里的语音链路和 Celery 报告，不要自己再写一套轮次与打断。
+- HR 流程边界看 [kinrochen/ai-interview](https://github.com/kinrochen/ai-interview)（约 13 星，MIT，2026-05 仍有更新）。覆盖简历解析、初筛人工确认、结构化题与评分标准、录音后的综合评价。它是 React 管理台，不是实时语音，也没有公开的指名客户。
+- 多路召回和断线续面看 [369pro/InterView-Agent](https://github.com/369pro/InterView-Agent)（0 星）。设计是 BM25 + BGE-M3 + 向量库 + Reranker，以及 MySQL 检查点加 Redis 补发。只借检索和续面协议，向量库继续用 pgvector，不为它引入 Milvus。代码质量未经社区验证，读的时候核对实现。
+- 评分口径看 [liuhan-agent/Agentic_Interviewer](https://github.com/liuhan-agent/Agentic_Interviewer)（约 3 星，MIT）。它把评分合同、Trace 回放写进产品，并写明没有人工基线就不宣称准确率。用来约束简历上的主观分差 <10%。
 
-公开仓库页面自述为 cong-lab 与海蜂合作的箱贴信息智能抽取算法，语言构成大约是 Python 与 Vue。复刻主线开工前不必再克隆它。
+只借一个点：
+
+- [zunff/interview-agent](https://github.com/zunff/interview-agent)：评分以原始音频为主、ASR 文本为辅，避免同音字把分打偏。栈是 Java，不迁移。
+- [ZHAB00/ai_interview](https://github.com/ZHAB00/ai_interview)（约 6 星）：FastAPI、Vue3、Celery、Redis、通义实时 ASR，模块清单接近。检索用 FAISS，浅于 pgvector 混合检索。
+- [heatnan/offerMaster](https://github.com/heatnan/offerMaster)（约 20 星）：追问要引用候选人原话。适合写成追问验收标准。
+- [ngoanpv/DeepInterview](https://github.com/ngoanpv/DeepInterview)（约 58 星，Apache-2.0，2026-10-13 仍在更新）：重推理放在通话前，通话中保持瘦循环，并公开哪些能力只是 mock。用来学习怎么讲演示仓和生产的差别。
+
+不作为底稿：Web Speech API 的 interview-forge、0 星且停留在 2025-10 的 guncv/Interview-AI-Agent、依赖 Vapi 的 mock-mind。未找到带钉钉招聘初试闭环的开源项目，钉钉继续按官方 Stream SDK 做。
+
+抖音和小红书没有能让本仓库读到个人收藏的官方接入。抖音有需单独申请的公开视频搜索；小红书开放平台账号授权到 2026-03-29 只开放 `basic_info`，笔记读取仍是规划。不使用第三方采集站或登录态抓取。
 
 ## 招聘智能体：优先补的追问
 
@@ -107,6 +109,6 @@
 
 ## 当前状态
 
-已读简历，已把约定写入本仓库。两份 Gitee 演示仓都还没克隆进本仓库。代码复刻尚未开始。
+已读简历，已把约定写入本仓库。箱贴项目不在范围内。2026-10-14 完成开源对照，结论见上文。两份 Gitee 演示仓都还没克隆进本仓库。代码复刻尚未开始。
 
 下一步默认从招聘智能体的「评测集 + RAG 出题」开工。用户若指定先做评分、语音或钉钉，以用户指定为准。
