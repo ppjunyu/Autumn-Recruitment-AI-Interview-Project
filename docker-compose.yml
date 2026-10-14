@@ -1,0 +1,14 @@
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_USER: recruit
+      POSTGRES_PASSWORD: recruit
+      POSTGRES_DB: recruit
+    ports:
+      - "5432:5432"
+    volumes:
+      - recruit_pg:/var/lib/postgresql/data
+
+volumes:
+  recruit_pg:
