@@ -61,27 +61,13 @@
 
 技能栏里的 A2A、Skills 等，只有切片里真用到并能讲清边界时才写进复刻。不为了简历名词单开模块。
 
-## 开源对照（2026-10-14）
+## 已定边界与当前切片
 
-没有一份开源项目同时具备真实企业用户和可照搬的语音初试闭环。星标是当天 GitHub API 读数，不能当成生产案例。
+低星开源项目不作为实现参考。抖音、小红书面经以后用 Playwright 浏览器自动化整理，当前不接社交账号。
 
-值得按主题读，不整仓替换：
+`frontend/` 是 Vue3 界面，`backend/` 是 FastAPI。可以新建初试、查看 BM25 命中的原句、文字作答、看到追问判定，并生成三阶段规则记录。没有大模型密钥时，出题和追问用模板，模板带上材料原句或候选人原话。
 
-- 实时语音用 LiveKit Agents（约 1.5 万星，Apache-2.0）。官方 `examples/survey` 用 TaskGroup 做分阶段筛选；`livekit-examples/interview-agent-demo` 把通话循环和通话后报告拆开。对应他简历里的语音链路和 Celery 报告，不要自己再写一套轮次与打断。
-- HR 流程边界看 [kinrochen/ai-interview](https://github.com/kinrochen/ai-interview)（约 13 星，MIT，2026-05 仍有更新）。覆盖简历解析、初筛人工确认、结构化题与评分标准、录音后的综合评价。它是 React 管理台，不是实时语音，也没有公开的指名客户。
-- 多路召回和断线续面看 [369pro/InterView-Agent](https://github.com/369pro/InterView-Agent)（0 星）。设计是 BM25 + BGE-M3 + 向量库 + Reranker，以及 MySQL 检查点加 Redis 补发。只借检索和续面协议，向量库继续用 pgvector，不为它引入 Milvus。代码质量未经社区验证，读的时候核对实现。
-- 评分口径看 [liuhan-agent/Agentic_Interviewer](https://github.com/liuhan-agent/Agentic_Interviewer)（约 3 星，MIT）。它把评分合同、Trace 回放写进产品，并写明没有人工基线就不宣称准确率。用来约束简历上的主观分差 <10%。
-
-只借一个点：
-
-- [zunff/interview-agent](https://github.com/zunff/interview-agent)：评分以原始音频为主、ASR 文本为辅，避免同音字把分打偏。栈是 Java，不迁移。
-- [ZHAB00/ai_interview](https://github.com/ZHAB00/ai_interview)（约 6 星）：FastAPI、Vue3、Celery、Redis、通义实时 ASR，模块清单接近。检索用 FAISS，浅于 pgvector 混合检索。
-- [heatnan/offerMaster](https://github.com/heatnan/offerMaster)（约 20 星）：追问要引用候选人原话。适合写成追问验收标准。
-- [ngoanpv/DeepInterview](https://github.com/ngoanpv/DeepInterview)（约 58 星，Apache-2.0，2026-10-13 仍在更新）：重推理放在通话前，通话中保持瘦循环，并公开哪些能力只是 mock。用来学习怎么讲演示仓和生产的差别。
-
-不作为底稿：Web Speech API 的 interview-forge、0 星且停留在 2025-10 的 guncv/Interview-AI-Agent、依赖 Vapi 的 mock-mind。未找到带钉钉招聘初试闭环的开源项目，钉钉继续按官方 Stream SDK 做。
-
-抖音和小红书没有能让本仓库读到个人收藏的官方接入。抖音有需单独申请的公开视频搜索；小红书开放平台账号授权到 2026-03-29 只开放 `basic_info`，笔记读取仍是规划。不使用第三方采集站或登录态抓取。
+还没接上：大模型密钥、语音识别、PostgreSQL/pgvector、Redis/Celery、钉钉凭证、真实候选人数据。本机约 16GB 内存且没有单独 GPU，不在本地加载 Qwen。
 
 ## 招聘智能体：优先补的追问
 
@@ -109,6 +95,4 @@
 
 ## 当前状态
 
-已读简历，已把约定写入本仓库。箱贴项目不在范围内。2026-10-14 完成开源对照，结论见上文。两份 Gitee 演示仓都还没克隆进本仓库。代码复刻尚未开始。
-
-下一步默认从招聘智能体的「评测集 + RAG 出题」开工。用户若指定先做评分、语音或钉钉，以用户指定为准。
+2026-10-14 已有可交互初试切片。下一步要补的是：可重复的检索评测、大模型出题与追问、语音转写、以及钉钉在有凭证之后的接入。不要把规则分写成简历上的主观分差。

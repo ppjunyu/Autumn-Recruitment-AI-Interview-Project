@@ -1,0 +1,9 @@
+fastapi
+uvicorn[standard]
+sqlalchemy
+rank-bm25
+langgraph
+pydantic
+pytest
+httpx
+python-multipart
